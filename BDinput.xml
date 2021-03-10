@@ -1,4 +1,10 @@
-<beast beautitemplate="StarBeast2" beautistatus="noAutoSetClockRate" namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.6">
+<beast version="2.0" namespace="beast.core:beast.evolution.
+alignment:beast.evolution.tree:beast.evolution.tree.
+coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.
+operators:beast.evolution.sitemodel:beast.evolution.
+substitutionmodel:beast.evolution.likelihood:beast.math.
+distributions:beast.evolution.speciation:beast.evolution.
+branchratemodel">
 
 
 
@@ -17,26 +23,27 @@
 <map name="LaplaceDistribution">beast.math.distributions.LaplaceDistribution</map>
     
 <map name="prior">beast.math.distributions.Prior</map>
-<data id="CNAprofile" dataType="IntegerData">
-	<sequence id="leaf1" spec="sequence" taxon="leaf1" totalcount="4" value="222111" />
+
+<data id="CNAprofile" dataType="integer">
+<!--<data id="CNAprofile" dataType="IntegerData">-->
+	<sequence id="leaf1" taxon="leaf1" value="222111" />
 </data>
 
 
 <distribution id="posterior" spec="util.CompoundDistribution">
 	<distribution id="prior" spec="util.CompoundDistribution">
-		<distribution conditionalOnRoot="false" id="YuleModel", spec="YuleModel" tree="@Tree">
+		<distribution conditionalOnRoot="false" id="YuleModel" spec="YuleModel" tree="@Tree">
 			<parameter estimate="false" id="birthRate" name="birthDiffRate" value="1.0"/>
 		</distribution>
 	</distribution>
 
-	<prior id="OrigTimePrior" spec="Prior" x="@OrigTime">
+	<prior id="OrigTimePrior" spec="beast.math.distributions.Prior" x="@OrigTime">
 			<Uniform id="Uniform.62" name="distr" />
 	</prior>
 
 	<distribution id="likelihood" spec="util.CompoundDistribution">
-		 <distribution id="DipOrigLikelihood" spec="DipOrigLikelihood" data="CNAprofile" tree="@Tree">
-			<parameter id="OrigTime" spec="parameter.RealParameter" lower="0.0" name= "OrigTime" upper="1.0">0.0</parameter>
-	
+		 <distribution id="DipOrigLikelihood" spec="DipOrigLikelihood" data="CNAprofile" tree="@Tree" OrigTime = "@OrigTime">
+			<!--<parameter id="OrigTime" spec="parameter.RealParameter" lower="0.0" name= "OrigTime" upper="1.0">0.0</parameter>-->
 			<siteModel id="SiteModel" spec="SiteModel">
 				<substModel id="BD" spec="BD">
 				</substModel>
@@ -52,8 +59,9 @@
 <run chainLength="10000000" id="mcmc" preBurnin="0" spec="MCMC">
 	<state id="state" storeEvery="100000">
 		<tree estimate="true" id="Tree" name="stateNode">
-			<taxonset id="TaxonSet" spec="TaxonSet">
+			<taxonset id="TaxonSet" spec="beast.evolution.alignment.TaxonSet">
 				<data idref="CNAprofile" name="alignment"/>
+			</taxonset>
 		</tree>
 		<parameter estimate="true" id="OrigTime" lower="0.0" name="stateNode" value="1.0"/>
 	</state>
@@ -92,6 +100,7 @@
 		<populationModel id="ConstantPopulation" spec="ConstantPopulation">
 			<parameter dimension="1" estimate="true" id="popSize" name="popSize" value="1"/>
 		</populationModel>
+	</init>
 </run>
 
 </beast>
