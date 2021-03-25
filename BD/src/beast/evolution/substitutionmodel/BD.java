@@ -7,21 +7,31 @@ import beast.core.Input.Validate;
 import beast.core.parameter.RealParameter;
 
 public class BD extends SubstitutionModel.Base {
+	public BD() {
+        // this is added to avoid a parsing error inherited from superclass because frequencies are not provided.
+        frequenciesInput.setRule(Validate.OPTIONAL);
+        try {
+            // this call will be made twice when constructed from XML
+            // but this ensures that the object is validly constructed for testing purposes.
+            initAndValidate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("initAndValidate() call failed when constructing BD()");
+        }
+    }
 	public Input<RealParameter> nstates = new Input<RealParameter>("nstates", "number of states to consider", Validate.REQUIRED);
-	
-	@Override
-	public void initAndValidate() {
-	    super.initAndValidate();
-	   	double n = nstates.get().getValue();
-	   	nrOfStates = (int)n;
-	    }
-	public static long binomi(int n, int k) {
+	//public static final int nstates = 30;
+    @Override
+    public double[] getFrequencies() {
+        return null;
+    }
+    
+    public static long binomi(int n, int k) {
         if ((n == k) || (k == 0))
             return 1;
         else
             return binomi(n - 1, k) + binomi(n - 1, k - 1);
     }
-	
 	public static double bd_prob(int child, int ancestor, double bd_rate, double distance) {
 		double p = 0;
 		int j;
