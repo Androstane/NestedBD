@@ -6,6 +6,7 @@ import beast.core.Input;
 import beast.core.Input.Validate;
 import beast.core.parameter.RealParameter;
 
+
 public class BD extends SubstitutionModel.Base {
 	public BD() {
         // this is added to avoid a parsing error inherited from superclass because frequencies are not provided.
@@ -25,6 +26,12 @@ public class BD extends SubstitutionModel.Base {
     public double[] getFrequencies() {
         return null;
     }
+    
+    public int getStateCount() {
+        nrOfStates = 30;
+        return nrOfStates;
+    }
+    protected int nrOfStates = 30;
     
     public static long binomi(int n, int k) {
         if ((n == k) || (k == 0))
@@ -50,28 +57,39 @@ public class BD extends SubstitutionModel.Base {
 	public void getTransitionProbabilities(Node node, double startTime, double endTime, double rate, double[] matrix) {
 		// TODO Auto-generated method stub
 		//assume birth rate = death rate = 1
-		int bd_rate = 1;
+		//System.out.println("TRANSITIONPROB");
+		double bd_rate = 0.01;
 		int index;
 		int i, j;
+		double prob;
 		double distance = (startTime - endTime) * rate;
 		for (i = 0; i < nrOfStates -1 ; ++i) {
 			for (j = 0; j < nrOfStates -1 ; ++j) {
 				index = i * nrOfStates + j;
 				if (i == 0) {
 					if (j == 0) {
-						matrix[index] = 1;
+						prob = 1;
+						//matrix[index] = 1;
 					}
 					else {
-						matrix[index] = 0;
+						prob = 0;
+						//matrix[index] = 0;
 					}
 				} else if(j == 0){
-					matrix[index] = Math.pow((bd_rate * distance) / (1 + bd_rate * distance), i);
+					prob =  Math.pow((bd_rate * distance) / (1 + bd_rate * distance), i);
+					//System.out.println("j == 0, " + prob);
+					//matrix[index] = Math.pow((bd_rate * distance) / (1 + bd_rate * distance), i);
 					
 				} else if (i == 1) {
-					matrix[index] = Math.pow(distance, j - 1) / Math.pow((1 + distance), j + 1);
+					prob = Math.pow(distance, j - 1) / Math.pow((1 + distance), j + 1);
+					//System.out.println("i == 1, " + prob);
+					//matrix[index] = Math.pow(distance, j - 1) / Math.pow((1 + distance), j + 1);
 				} else {
-					matrix[index] = bd_prob(j, i, bd_rate, distance);
+					prob = bd_prob(j, i, bd_rate, distance);
+					//matrix[index] = bd_prob(j, i, bd_rate, distance);
+					//System.out.println("else, " + prob);
 				}
+			matrix[index] = prob;
 			}
 		}
 		

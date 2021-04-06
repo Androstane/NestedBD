@@ -28,8 +28,7 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
     //protected int nrofStates = dataInput.get().getMaxStateCount();
     //protected int nrofPattern = dataInput.get().getPatternCount();
 	protected int nrofStates = 30;
-	protected int nrofPattern = 4;
-    protected static double bd_rate = 1.0;
+    protected static double bd_rate = 0.01;
     
     
     /* override to avoid beagle*/
@@ -60,8 +59,7 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
 
         //int stateCount = dataInput.get().getMaxStateCount();
         int stateCount = 30;
-        int	patterns = 30;
-        //int patterns = dataInput.get().getPatternCount();
+        int patterns = dataInput.get().getPatternCount();
         if (stateCount == 4) {
             likelihoodCore = new BeerLikelihoodCore4();
         } else {
@@ -113,7 +111,7 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
         final TreeInterface tree = treeInput.get();
 
         try {
-        	if (traverse(tree.getRoot()) != Tree.IS_CLEAN)
+        	if (traverse(tree.getRoot()) != Tree.IS_CLEAN )
         		calcLogP();
         }
         catch (ArithmeticException e) {
@@ -153,7 +151,7 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
                 logP += (patternLogLikelihoods[i] - ascertainmentCorrection) * dataInput.get().getPatternWeight(i);
             }
         } else {
-            for (int i = 0; i < dataInput.get().getPatternCount(); i++) {
+            for (int i = 0; i< dataInput.get().getPatternCount(); i++) {
                 logP += patternLogLikelihoods[i] * dataInput.get().getPatternWeight(i);
             }
         }
@@ -179,7 +177,7 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
             for (int i = 0; i < m_siteModel.getCategoryCount(); i++) {
                 final double jointBranchRate = m_siteModel.getRateForCategory(i, node) * branchRate;
                 substitutionModel.getTransitionProbabilities(node, parent.getHeight(), node.getHeight(), jointBranchRate, probabilities);
-                //System.out.println(node.getNr() + " " + Arrays.toString(m_fProbabilities));
+                //System.out.println(node.getNr() + " " + Arrays.toString(probabilities));
                 likelihoodCore.setNodeMatrix(nodeIndex, i, probabilities);
             }
             update |= Tree.IS_DIRTY;
@@ -206,6 +204,8 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
                 if (update >= Tree.IS_FILTHY) {
                     likelihoodCore.setNodeStatesForUpdate(nodeIndex);
                 }
+                
+                
 
                 if (m_siteModel.integrateAcrossCategories()) {
                     likelihoodCore.calculatePartials(childNum1, childNum2, nodeIndex);
@@ -218,7 +218,9 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
                     // No parent this is the root of the beast.tree -
                     // calculate the pattern likelihoods
                     final double[] proportions = m_siteModel.getCategoryProportions(node);
+                    //System.out.println(node.getNr() + " Proportions" + Arrays.toString(proportions));
                     likelihoodCore.integratePartials(node.getNr(), proportions, m_fRootPartials);
+                    //System.out.println(node.getNr() + " m_RootPartials " + Arrays.toString(m_fRootPartials));
                     if (constantPattern != null) { // && !SiteModel.g_bUseOriginal) {
                         proportionInvariant = m_siteModel.getProportionInvariant();
                         // some portion of sites is invariant, so adjust root partials for this
@@ -226,7 +228,7 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
                             m_fRootPartials[i] += proportionInvariant;
                         }
                     }
-                    if (origtime.isDirty()){
+                    if (origtime.get().somethingIsDirty()){
                         update |= Tree.IS_DIRTY;
                     }
                     //System.out.print( m_fRootPartials.toString());
@@ -274,9 +276,10 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
     public void DipOrigLikelihoods(double[] partials, double[] outLogLikelihoods) {
     	double distance = origtime.get().getValue();
         int v = 0;
-        for (int k = 0; k < nrofPattern; k++) {
-            double max_prob = 0.0;
+        for (int k = 0; k <dataInput.get().getPatternCount(); k++) {
+            double max_prob =  Double.NEGATIVE_INFINITY;
             for (int i = 0; i < nrofStates; i++) {
+            	//System.out.println("patials " + partials[v]);
             	max_prob = Double.max(max_prob, partials[v]* DipOrigProb(i, distance));
                 v++;
             }
