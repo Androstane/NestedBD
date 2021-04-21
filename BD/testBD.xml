@@ -21,23 +21,14 @@
 <map name="prior">beast.math.distributions.Prior</map>
 
 <data id="CNAprofile" dataType="integer">
-<sequence taxon="diploid1">
-            1,2,2
-        </sequence>
-<sequence taxon="diploid2">
-            2,2,2
+<sequence taxon="diploid">
+            22222222222222222222222222
         </sequence>
 <sequence taxon="leaf1">
-            2,2,5
+            22222222222222222223333322
         </sequence>
 <sequence taxon="leaf2">
-            2,2,5
-        </sequence>
-<sequence taxon="leaf3">
-            3,2,6
-        </sequence>
-<sequence taxon="leaf5">
-            5,2,2
+            22662222222224422223333322
         </sequence>
 </data>
 
@@ -73,8 +64,8 @@
 </distribution>
 
 
-<run chainLength="20" id="mcmc" preBurnin="0" spec="MCMC">
-	<state id="state" storeEvery="1">
+<run chainLength="10000000" id="mcmc" preBurnin="0" spec="MCMC">
+	<state id="state" storeEvery="100000">
 		<tree estimate="true" id="Tree" name="stateNode">
 			<taxonset id="TaxonSet" spec="beast.evolution.alignment.TaxonSet">
 				<data idref="CNAprofile" name="alignment"/>
@@ -84,24 +75,23 @@
 	</state>
 
 	<distribution idref="posterior"/>
-	<operator degreesOfFreedom="1" id="treeScaler" scaleFactor="0.5" spec="beast.evolution.operators.ScaleOperator" tree="@Tree" weight="10.0"/>
+	<operator degreesOfFreedom="1" id="treeScaler" scaleFactor="0.5" spec="beast.evolution.operators.ScaleOperator" tree="@Tree" weight="1.0"/>
 	<operator id="UniformOperator" spec="beast.evolution.operators.Uniform" tree="@Tree" weight="10.0"/>
-	<operator gaussian="true" id="SubtreeSlide" optimise="true" size="1.0" spec="beast.evolution.operators.SubtreeSlide" tree="@Tree" weight="10.0"/>
-	<operator id="narrow" isNarrow="true" spec="beast.evolution.operators.Exchange" tree="@Tree" weight="10.0"/>
-	<operator id="wide" isNarrow="false" spec="beast.evolution.operators.Exchange" tree="@Tree" weight="10.0"/>
-	<operator id="WilsonBalding" spec="beast.evolution.operators.WilsonBalding" tree="@Tree" weight="10.0"/>
-	<operator degreesOfFreedom="1" id="OrigTimeScaler" scaleFactor="0.5" spec="beast.evolution.operators.ScaleOperator" weight="0.0" parameter="@OrigTime"/>
+	<operator gaussian="true" id="SubtreeSlide" optimise="true" size="1.0" spec="beast.evolution.operators.SubtreeSlide" tree="@Tree" weight="5.0"/>
+	<operator id="narrow" isNarrow="true" spec="beast.evolution.operators.Exchange" tree="@Tree" weight="1.0"/>
+	<operator id="wide" isNarrow="false" spec="beast.evolution.operators.Exchange" tree="@Tree" weight="1.0"/>
+	<operator id="WilsonBalding" spec="beast.evolution.operators.WilsonBalding" tree="@Tree" weight="1.0"/>
+	<operator degreesOfFreedom="1" id="OrigTimeScaler" scaleFactor="0.5" spec="beast.evolution.operators.ScaleOperator" weight="1.0" parameter="@OrigTime"/>
 
-	<logger fileName="beast.$(seed).log" id="tracelog" logEvery="1" model="@posterior">
+	<logger fileName="beast.$(seed).log" id="tracelog" logEvery="10000" model="@posterior">
 	<log idref="posterior"/>
 	<log idref="likelihood"/>
-	
 	<log idref="prior"/>
 	<log id="TreeHeight" spec="TreeHeightLogger" tree="@Tree"/>
 	<log idref="YuleModel"/>
 	<log idref="OrigTime"/>
 	</logger>
-	<logger id="screenlog" logEvery="1">
+	<logger id="screenlog" logEvery="10000">
 	<log idref="posterior"/>
 	<log arg="@posterior" id="ESS.0" spec="util.ESS"/>
 	<log idref="likelihood"/>

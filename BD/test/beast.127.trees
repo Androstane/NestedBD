@@ -1,0 +1,23 @@
+#NEXUS
+
+Begin taxa;
+	Dimensions ntax=6;
+		Taxlabels
+			diploid1
+			diploid2
+			leaf1
+			leaf2
+			leaf3
+			leaf5
+			;
+End;
+Begin trees;
+	Translate
+		   1 diploid1,
+		   2 diploid2,
+		   3 leaf1,
+		   4 leaf2,
+		   5 leaf3,
+		   6 leaf5
+;
+tree STATE_0 = ((((1:0.07659609552633323,(4:0.030563157821999403,5:0.030563157821999403):0.04603293770433382):0.45237440491135833,3:0.5289705004376916):0.43856426244930913,6:0.9675347628870007):0.18621775162833532,2:1.153752514515336):0.0;

@@ -29,7 +29,7 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
     //protected int nrofPattern = dataInput.get().getPatternCount();
 	protected int nrofStates = 30;
     protected static double bd_rate = 0.01;
-    
+    protected boolean recalc = true;
     
     /* override to avoid beagle*/
     @Override
@@ -89,7 +89,19 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
         if (dataInput.get().isAscertained) {
             useAscertainedSitePatterns = true;
         }
+        
+        
     }
+    @Override
+    protected boolean requiresRecalculation() {
+    	//final TreeInterface tree = treeInput.get();
+        //System.out.println(origtime.get().somethingIsDirty());
+        //System.out.println(traverse(tree.getRoot()) != Tree.IS_CLEAN);
+        return (origtime.get().somethingIsDirty() | recalc);
+        	
+        //return true;
+    }
+    
     
    
     
@@ -168,6 +180,7 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
         final double branchRate = branchRateModel.getRateForBranch(node);
         final double branchTime = node.getLength() * branchRate;
 
+
         // First update the transition probability matrix(ices) for this branch
         //if (!node.isRoot() && (update != Tree.IS_CLEAN || branchTime != m_StoredBranchLengths[nodeIndex])) {
         if (!node.isRoot() && (update != Tree.IS_CLEAN || branchTime != m_branchLengths[nodeIndex])) {
@@ -185,7 +198,6 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
 
         // If the node is internal, update the partial likelihoods.
         if (!node.isLeaf()) {
-
             // Traverse down the two child nodes
             final Node child1 = node.getLeft(); //Two children
             final int update1 = traverse(child1);
@@ -228,14 +240,15 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
                             m_fRootPartials[i] += proportionInvariant;
                         }
                     }
-                    if (origtime.get().somethingIsDirty()){
-                        update |= Tree.IS_DIRTY;
-                    }
+
                     //System.out.print( m_fRootPartials.toString());
                     DipOrigLikelihoods(m_fRootPartials, patternLogLikelihoods);
                 }
 
             }
+        }
+        if (update == 0) {
+        	recalc = false;
         }
         return update;
     } // traverseWithBRM

@@ -141,7 +141,7 @@
 
 
 	<distribution id="likelihood" spec="util.CompoundDistribution">
-		 <distribution id="DipOrigLikelihood" spec="DiploidOriginLikelihood" data="@CNAprofile" tree="@Tree" origtime = "@OrigTime">
+		 <distribution id="DipOrigLikelihood" spec="beast.evolution.likelihood.DiploidOriginLikelihood" data="@CNAprofile" tree="@Tree" origtime = "@OrigTime">
 			<!--<parameter id="OrigTime" spec="parameter.RealParameter" lower="0.0" name= "OrigTime" upper="1.0">0.0</parameter>-->
 			<siteModel id="SiteModel" spec="SiteModel">
 				<substModel id="BD" spec="beast.evolution.substitutionmodel.BD" nstates = "30">
@@ -162,7 +162,7 @@
 				<data idref="CNAprofile" name="alignment"/>
 			</taxonset>
 		</tree>
-		<parameter estimate="true" id="OrigTime" lower="0.0" name="stateNode" value="1"/>
+		<parameter estimate="true" id="OrigTime" lower="0.0" upper = "1.0" name="stateNode" value="1"/>
 	</state>
 
 	<distribution idref="posterior"/>
@@ -172,7 +172,8 @@
 	<operator id="narrow" isNarrow="true" spec="beast.evolution.operators.Exchange" tree="@Tree" weight="10.0"/>
 	<operator id="wide" isNarrow="false" spec="beast.evolution.operators.Exchange" tree="@Tree" weight="10.0"/>
 	<operator id="WilsonBalding" spec="beast.evolution.operators.WilsonBalding" tree="@Tree" weight="10.0"/>
-	<operator degreesOfFreedom="1" id="OrigTimeScaler" scaleFactor="0.5" spec="beast.evolution.operators.ScaleOperator" weight="10.0" parameter="@OrigTime"/>
+	<operator degreesOfFreedom="1" id="OrigTimeScaler" scaleFactor="0.5" spec="beast.evolution.operators.ScaleOperator" weight="20.0" parameter="@OrigTime"/>
+	
 
 	<logger fileName="beast.$(seed).log" id="tracelog" logEvery="1000" model="@posterior">
 	<log idref="posterior"/>
@@ -196,10 +197,9 @@
 
 
 
-	<init id="RandomTree" initial="@Tree" spec="RandomTree" taxa="@CNAprofile">
-		<populationModel id="ConstantPopulation" spec="ConstantPopulation">
-			<parameter dimension="1" estimate="true" id="popSize" name="popSize" value="1"/>
-		</populationModel>
+
+	<init spec='beast.util.ClusterTree' id='UPGMATree.t:XYZ26' initial="@Tree" clusterType='upgma' taxa='@CNAprofile'>
+
 	</init>
 </run>
 

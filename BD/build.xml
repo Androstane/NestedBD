@@ -1,0 +1,156 @@
+ <!-- Build BD model -->
+ <project basedir="." default="build_jar_all_BD" name="BUILD_BD">
+ 	<description>
+ 	Build BD.
+ 	JUnit test is available for this build.
+ 	$Id: build_BD.xml $
+ 	</description>
+ 	<!-- set global properties for this build -->
+ 	<property name="srcBD" location="src" />
+ 	<property name="buildBD" location="build" />
+ 	<property name="libBD" location="lib" />
+ 	<property name="release_dir" value="release" />
+ 	<property name="distBD" location="${buildBD}/dist" />
+ 	<property name="beast2path" location="../beast2" />
+ 	<property name="libBeast2" location="${beast2path}/lib" />
+ 	<property name="srcBeast2" location="${beast2path}/src" />
+ 	<property name="beast2classpath" location="${beast2path}/build" />
+ 	<property name="Add_on_dir" value="${release_dir}/package" />
+ <import file="${beast2path}/build.xml" />
+ 	<property name="main_class_BEAST" value="beast.app.BeastMCMC" />
+ 	<property name="report" value="${buildBD}/junitreport"/>
+ 	<path id="classpath">
+ <pathelement path="${buildBD}"/>
+ 		<fileset dir="${libBeast2}" includes="junit-4.8.2.jar"/>
+ <pathelement path="${beast2classpath}"/>
+ 	</path>
+ 	<!-- start -->
+ 	<target name="initBD">
+ 		<echo message="${ant.project.name}: ${ant.file}" />
+ 	</target>
+ 	<target name="cleanBD">
+ 	<delete dir="${buildBD}" />
+ 	</target>
+ 	
+ 	<!-- clean previous build, and then compile Java source code, and Juint test -->
+ 	<target name="build_all_BD" depends="cleanBD,compile-allBD,junitBD" description="Clean and Build all run-time stuff">
+ 	</target>
+ 	
+ 	<!-- clean previous build, compile Java source code, and Junit test, and make the beast.jar and beauti.jar -->
+ 	<target name="build_jar_all_BD" depends="cleanBD,compile-allBD,junitBD,dist_all_BD" description="Clean and Build all run-time stuff">
+ 	</target>
+ 	
+ 	<!-- No JUnit Test, clean previous build, compile Java source code, and make the BD.jar and beauti.jar -->
+ 	<target name="build_jar_all_BD_NoJUnitTest" depends="cleanBD,compile-allBD,dist_all_BD" description="Clean and Build all run-time stuff">
+ 	</target>
+ 
+ 	<!-- compile Java source code -->
+ 	<target name="compile-allBD" depends="initBD,compile-all">
+ 	<!-- Capture the path as a delimited property using the refid attribute -->
+ 	<property name="myclasspath" refid="classpath"/>
+ 	<!-- Emit the property to the ant console -->
+ 	<echo message="Classpath = ${myclasspath}"/>
+ 		<mkdir dir="${buildBD}" />
+ 		<!-- Compile the java code from ${srcBD} into ${buildBD} /bin -->
+ 		<javac srcdir="${srcBD}" destdir="${buildBD}" classpathref="classpath" fork="true" memoryinitialsize="256m" memorymaximumsize="256m" source = "1.8" target = "1.8">
+ 			<include name="beast/**/**" />
+ 			<!-- compile JUnit test classes -->
+ 			<include name="test/beast/**" />
+ 		</javac>
+ 		<echo message="Successfully compiled." />
+ 	</target>
+ 
+ 	<!-- make the beast.jar and beauti.jar -->
+ 	<target name="dist_all_BD" depends="compile-allBD" description="create BD jar">
+ 		<!-- Create the distribution directory -->
+ 		<mkdir dir="${distBD}" />
+ 		<!-- Put everything in ${buildBD} into the beast.jar file -->
+ 		<jar jarfile="${distBD}/BD.jar">
+ 			<manifest>
+ 				<attribute name="Built-By" value="${user.name}" />
+ 				<attribute name="Main-Class" value="${main_class_BEAST}" />
+ 			</manifest>
+ 			<fileset dir="${buildBD}">
+ 				<include name="beast/**/*.class" />
+ 			</fileset>
+ 			<fileset dir="${beast2classpath}">
+ 				<include name="beast/**/*.class" />
+ 				<include name="beast/**/*.properties" />
+ 				<include name="beast/**/*.png" />
+ 				<include name="beagle/**/*.class" />
+ 				<include name="org/**/*.class" />
+ 			</fileset>
+ 		</jar>
+ 		<jar jarfile="${distBD}/BD.src.jar">
+ 			<fileset dir="${srcBD}">
+ 				<include name="beast/**/*.java" />
+ 				<include name="beast/**/*.png" />
+ 				<include name="beast/**/*.xsl" />
+ 			</fileset>
+ </jar>
+ 		<jar jarfile="${dist}/BD.addon.jar">
+ 			<manifest>
+ 				<attribute name="Built-By" value="${user.name}" />
+ 			</manifest>
+ 			<fileset dir="${buildBD}">
+ 				<include name="beast/**/*.class" />
+ 				<include name="util/**/*.class" />
+ 				<include name="**/*.properties" />
+ 			</fileset>
+ 		</jar>
+ 	</target>
+ 
+ 	<!-- run beast.jar -->
+ 	<target name="run_BD">
+ 		<java jar="${distBD}/BD.jar" fork="true" />
+ 	</target>
+ 
+ 	<!-- JUnit test -->
+ 	<target name="junitBD">
+ 		<mkdir dir="${report}" />
+ 		<junit printsummary="yes"> <!--showoutput='yes'-->
+ 			<classpath>
+ 				<path refid="classpath" />
+ 				<path location="${buildBD}" />
+ 			</classpath>
+ 			<formatter type="xml" />
+ 			<batchtest fork="yes" todir="${report}">
+ 				<fileset dir="${srcBD}">
+ <include name="test/**/*Test.java"/>
+ 				</fileset>
+ 				<fileset dir="${srcBeast2}">
+ <include name="test/beast/integration/**/*Test.java"/>
+ <exclude name="test/beast/integration/**/ResumeTest.java"/>
+ 				</fileset>
+ 			</batchtest>
+ 		</junit>
+ 		<echo message="JUnit test finished." />
+ 	</target>
+ <target name="junitreport">
+ 		<junitreport todir="${report}">
+ 			<fileset dir="${report}" includes="*.xml"/>
+ 			<report format="frames" todir="${report}"/>
+ 		</junitreport>
+ 		<echo message="JUnit test report finished." />
+ 	</target>
+ 	<target name="addon"
+ 	depends="build_jar_all_BD_NoJUnitTest"
+ 	description="release BEAST 2 package version of BD">
+ 		<delete dir="${Add_on_dir}" />
+ 		<!-- Create the release directory -->
+ 		<mkdir dir="${Add_on_dir}" />
+ 		<mkdir dir="${Add_on_dir}/lib" />
+ 		<copy todir="${Add_on_dir}/lib">
+ 			<fileset dir="${dist}" includes="BD.addon.jar" />
+ 		</copy>
+ 		<copy todir="${Add_on_dir}">
+ 			<fileset dir="${dist}" includes="BD.src.jar" />
+ 		</copy>
+ 		<jar jarfile="${dist}/BD.addon.zip">
+ 			<fileset dir="${Add_on_dir}">
+ 				<include name="**/*" />
+ 			</fileset>
+ </jar>
+ 		<echo message="Package version release is finished." />
+ 	</target>
+ </project>
