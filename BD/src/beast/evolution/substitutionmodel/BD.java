@@ -1,3 +1,4 @@
+  
 package beast.evolution.substitutionmodel;
 import beast.evolution.datatype.DataType;
 import beast.evolution.datatype.IntegerData;
@@ -59,13 +60,13 @@ public class BD extends SubstitutionModel.Base {
 		// TODO Auto-generated method stub
 		//assume birth rate = death rate = 1
 		//System.out.println("TRANSITIONPROB");
-		double bd_rate = 0.01;
+		double bd_rate = 1;
 		int index;
 		int i, j;
 		double prob;
 		double distance = (startTime - endTime) * rate;
-		for (i = 0; i < nrOfStates -1 ; ++i) {
-			for (j = 0; j < nrOfStates -1 ; ++j) {
+		for (i = 0; i < nrOfStates ; ++i) {
+			for (j = 0; j < nrOfStates ; ++j) {
 				index = i * nrOfStates + j;
 				if (i == 0) {
 					if (j == 0) {

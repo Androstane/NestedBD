@@ -241,8 +241,11 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
                         }
                     }
 
-                    //System.out.print( m_fRootPartials.toString());
-                    DipOrigLikelihoods(m_fRootPartials, patternLogLikelihoods);
+                	double distance = origtime.get().getValue();
+                	//System.out.println("DD" + distance);
+                	substitutionModel.getTransitionProbabilities(node, distance, 0.0,  1.0, probabilities);
+                	//System.out.println("probabilitys" + Arrays.toString(probabilities));
+                    DipOrigLikelihoods(m_fRootPartials, probabilities, patternLogLikelihoods);
                 }
 
             }
@@ -253,50 +256,24 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
         return update;
     } // traverseWithBRM
     
-    protected long binomi(int n, int k) {
-        if ((n == k) || (k == 0))
-            return 1;
-        else
-            return binomi(n - 1, k) + binomi(n - 1, k - 1);
-    }
-	
-	protected double bd_prob(int child, int ancestor, double bd_rate, double distance) {
-		double p = 0;
-		int j;
-		double p_j;
-		int range = Math.min(child, ancestor) + 1;
-		for (j = 1; j < range; ++j ){
-			p_j = binomi(ancestor, j) * binomi(child - 1, j - 1) * Math.pow(bd_rate * distance, -2 * j);
-			p += p_j;
-		}
-		p *= Math.pow(distance * bd_rate / (1 + distance * bd_rate), child + ancestor);
-		return p; 
-	}
 
     
-    protected double DipOrigProb(int child, double distance) {
-    	double prob;
-    	if (child == 0){
-    		prob = Math.pow(distance * bd_rate/(1 + distance * bd_rate), 2);
-    	}
-    	else {
-    		prob = bd_prob(child, 2, bd_rate, distance);
-    	}
-    	return prob;
-    }
     
-    
-    public void DipOrigLikelihoods(double[] partials, double[] outLogLikelihoods) {
-    	double distance = origtime.get().getValue();
+    public void DipOrigLikelihoods(double[] partials, double[] transition_prob, double[] outLogLikelihoods) {
+
         int v = 0;
+        //double distance = origtime.get().getValue();
+        //System.out.println("DDD" + distance);
+    	//System.out.println(dataInput.get().getPatternCount());
         for (int k = 0; k <dataInput.get().getPatternCount(); k++) {
             double max_prob =  Double.NEGATIVE_INFINITY;
             for (int i = 0; i < nrofStates; i++) {
-            	//System.out.println("patials " + partials[v]);
-            	max_prob = Double.max(max_prob, partials[v]* DipOrigProb(i, distance));
+            	max_prob = Double.max(max_prob, partials[v]* transition_prob[60+i]);
                 v++;
             }
+            //System.out.println(max_prob);
             outLogLikelihoods[k] = Math.log(max_prob) + likelihoodCore.getLogScalingFactor(k);
         }
     }
 }
+

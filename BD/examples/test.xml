@@ -155,7 +155,7 @@
 </distribution>
 
 
-<run chainLength="100" id="mcmc" preBurnin="0" spec="MCMC">
+<run chainLength="4000000" id="mcmc" preBurnin="0" spec="MCMC">
 	<state id="state" storeEvery="1">
 		<tree estimate="true" id="Tree" name="stateNode">
 			<taxonset id="TaxonSet" spec="beast.evolution.alignment.TaxonSet">
@@ -172,7 +172,7 @@
 	<operator id="narrow" isNarrow="true" spec="beast.evolution.operators.Exchange" tree="@Tree" weight="10.0"/>
 	<operator id="wide" isNarrow="false" spec="beast.evolution.operators.Exchange" tree="@Tree" weight="10.0"/>
 	<operator id="WilsonBalding" spec="beast.evolution.operators.WilsonBalding" tree="@Tree" weight="10.0"/>
-	<operator degreesOfFreedom="1" id="OrigTimeScaler" scaleFactor="0.5" spec="beast.evolution.operators.ScaleOperator" weight="20.0" parameter="@OrigTime"/>
+	<operator degreesOfFreedom="1" id="OrigTimeScaler" scaleFactor="0.5" spec="beast.evolution.operators.ScaleOperator" weight="10.0" parameter="@OrigTime"/>
 	
 
 	<logger fileName="beast.$(seed).log" id="tracelog" logEvery="1000" model="@posterior">
@@ -181,26 +181,26 @@
 	
 	<log idref="prior"/>
 	<log id="TreeHeight" spec="TreeHeightLogger" tree="@Tree"/>
+	<log arg="@posterior" id="ESS.0" spec="util.ESS"/>
 	<log idref="YuleModel"/>
 	<log idref="OrigTime"/>
 	</logger>
-	<logger id="screenlog" logEvery="1">
+	
+	<logger id="screenlog" logEvery="300">
 	<log idref="posterior"/>
 	<log arg="@posterior" id="ESS.0" spec="util.ESS"/>
 	<log idref="likelihood"/>
 	<log idref="prior"/>
 	</logger>
 
-	<logger fileName="beast.$(seed).trees" id="treelog" logEvery="10000" mode="tree">
+	<logger fileName="beast.$(seed).trees" id="treelog" logEvery="1000" mode="tree">
 	<log idref="Tree"/>
+
 	</logger>
-
-
-
-
 	<init spec='beast.util.ClusterTree' id='UPGMATree.t:XYZ26' initial="@Tree" clusterType='upgma' taxa='@CNAprofile'>
-
 	</init>
+
+
 </run>
 
 </beast>
