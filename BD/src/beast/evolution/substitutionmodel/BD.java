@@ -3,6 +3,9 @@ package beast.evolution.substitutionmodel;
 import beast.evolution.datatype.DataType;
 import beast.evolution.datatype.IntegerData;
 import beast.evolution.tree.Node;
+
+import java.util.Arrays;
+
 import beast.core.Input;
 import beast.core.Input.Validate;
 import beast.core.parameter.RealParameter;
@@ -46,12 +49,48 @@ public class BD extends SubstitutionModel.Base {
 		int j;
 		double p_j;
 		int range = Math.min(child, ancestor) + 1;
-		for (j = 1; j < range; ++j ){
-			p_j = binomi(ancestor, j) * binomi(child - 1, j - 1) * Math.pow(bd_rate * distance, -2 * j);
-			p += p_j;
+		if (distance <=1) {
+			for (j = 1; j < range; ++j ){
+				p_j = binomi(ancestor, j) * binomi(child - 1, j - 1) * Math.pow(bd_rate * distance, child + ancestor -2*j);
+				p += p_j;
+			}
+			p = p * Math.pow(bd_rate / (1 + distance * bd_rate), child + ancestor);
+			//if (Math.pow(bd_rate / (1 + distance * bd_rate), child + ancestor) == 0) {
+				//p = 0;
+			//}	
 		}
-		p *= Math.pow(distance * bd_rate / (1 + distance * bd_rate), child + ancestor);
+		else {
+			for (j = 1; j < range; ++j ){
+				p_j = binomi(ancestor, j) * binomi(child - 1, j - 1) * Math.pow(bd_rate * distance, -2 * j);
+				p += p_j;
+			}
+			p = p * Math.pow(bd_rate*distance / (1 + distance * bd_rate), child + ancestor);
+			if (Math.pow(bd_rate*distance / (1 + distance * bd_rate), child + ancestor) == 0) {
+				//p = 0;
+			}
+		}
+
 		return p; 
+	}
+	
+	protected boolean checkTransitionMatrix(double[] matrix) {
+		double sum = 0;
+		int i, j;
+		int index;
+		for (i = 0; i < nrOfStates ; ++i) {
+			for (j = 0; j < nrOfStates ; ++j) {
+				index = i * nrOfStates + j;
+				sum = sum + matrix[index]; 
+			}
+			if (sum > 1.01 |sum < 0.95) {
+				//System.out.println("current index:" + i);
+				//System.out.println(sum);
+				return true;
+			}
+		sum = 0;
+		}		
+		return true;
+		
 	}
 
 	 
@@ -65,6 +104,7 @@ public class BD extends SubstitutionModel.Base {
 		int i, j;
 		double prob;
 		double distance = (startTime - endTime) * rate;
+		//System.out.println("D" + distance);
 		for (i = 0; i < nrOfStates ; ++i) {
 			for (j = 0; j < nrOfStates ; ++j) {
 				index = i * nrOfStates + j;
@@ -88,13 +128,15 @@ public class BD extends SubstitutionModel.Base {
 					//matrix[index] = Math.pow(distance, j - 1) / Math.pow((1 + distance), j + 1);
 				} else {
 					prob = bd_prob(j, i, bd_rate, distance);
+
 					//matrix[index] = bd_prob(j, i, bd_rate, distance);
 					//System.out.println("else, " + prob);
 				}
 			matrix[index] = prob;
 			}
 		}
-		
+		//assert checkTransitionMatrix(matrix):"Transition Matrix does not sum up to 1.";
+
 	}
 
 	@Override

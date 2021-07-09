@@ -3,16 +3,23 @@
 #
 #<?xml version="1.0" encoding="UTF-8" standalone="no"?><input id="posterior" spec="beast.core.util.CompoundDistribution">
 #    <distribution id="prior" spec="beast.core.util.CompoundDistribution">
-#        <distribution id="YuleModel" spec="beast.evolution.speciation.YuleModel">
-#            <parameter estimate="false" id="birthRate" name="birthDiffRate" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#        <distribution id="BirthDeathModel" spec="beast.evolution.speciation.BirthDeathGernhard08Model">
+#            <parameter id="ExtinctionFraction" name="relativeDeathRate" spec="beast.core.parameter.RealParameter">0.5</parameter>
+#            <parameter id="netDiversificationRate" name="birthDiffRate" spec="beast.core.parameter.RealParameter">1.0</parameter>
 #            <tree id="Tree" spec="beast.evolution.tree.Tree">
 #                <taxonset id="TaxonSet" spec="beast.evolution.alignment.TaxonSet">
 #                </taxonset>
 #            </tree>
 #        </distribution>
+#        <prior id="DiversificationPrior" name="distribution" x="@netDiversificationRate">
+#            <Uniform id="Uniform.0" name="distr" upper="1000000.0"/>
+#        </prior>
+#        <prior id="ExtinctionFractionPrior" name="distribution" x="@ExtinctionFraction">
+#            <Uniform id="Uniform.1" name="distr"/>
+#        </prior>
 #        <prior id="OrigTimePrior" name="distribution">
-#            <parameter id="OrigTime" lower="0.0" name="x" spec="beast.core.parameter.RealParameter" upper="1.0">1.0</parameter>
-#            <Uniform id="Uniform.62" name="distr"/>
+#            <parameter id="OrigTime" name="x" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#            <Uniform id="Uniform.2" name="distr"/>
 #        </prior>
 #    </distribution>
 #    <distribution id="likelihood" spec="beast.core.util.CompoundDistribution">
@@ -29,5 +36,6 @@
 #    </distribution>
 #</input>
 #
-Sample	posterior	likelihood	prior	TreeHeight	YuleModel	OrigTime
-0	-962762.7987856712	-962757.8088437899	-4.989941881434746	0.17326575918625495	-4.989941881434746	0.597352893163576
+Sample	posterior	likelihood	prior	TreeHeight	BirthDeathModel	OrigTime	netDiversificationRate	ExtinctionFraction
+0	-1672634.9138700347	-1672632.390461145	-2.523408889712581	2.714673088727241	11.292101668251693	1.0	1.0	0.5
+1000	-843579.1937453616	-843596.589116074	17.395370712365192	3.720352002448476	31.210881270329466	6.188651694010846E-5	1.0436879908948948	0.9274855983122671
