@@ -18,7 +18,7 @@ First, download and build the latest release of Beast2 Project:
 Download and build NestedBD
 
     cd ../
-    git clone https://github.com/arjun-1/BEASTvntr.git
+    git clone https://github.com/Androstane/NestedBD.git
     cd NestedBD
     ant addon
 
