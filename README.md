@@ -19,7 +19,7 @@ Download and build NestedBD
 
     cd ../
     git clone https://github.com/Androstane/NestedBD.git
-    cd NestedBD
+    cd NestedBD/BD/
     ant addon
 
 Install NestedBD by moving the package to a place where BEAUti can find it
