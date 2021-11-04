@@ -6,7 +6,7 @@ NestedBD is a BEAST 2 package for inference of evolutionary trees (topologies an
 We are working on making NestedBD availalbe through BEAST2 Package Manager. Currently, if you would like to use NestedBD it can be installed mannualy by building from the source file contained in this repository. 
 
 #### Prerequisite 
-Apache Ant nees to be installed.
+Apache Ant needs to be installed.
 
 #### Build from source
 First, download and build the latest release of Beast2 Project: 
