@@ -2,6 +2,7 @@ package beast.evolution.likelihood;
 import beast.core.Description;
 import beast.core.Input;
 import beast.core.State;
+import beast.core.Input.Validate;
 import beast.core.parameter.RealParameter;
 import beast.core.util.Log;
 import beast.evolution.alignment.Alignment;
@@ -25,15 +26,20 @@ import java.util.*;
 
 public class DiploidOriginLikelihood extends TreeLikelihood {
 	public Input<RealParameter> origtime = new Input<RealParameter>("origtime", "time between diploid and tree root");
+	public Input<RealParameter> nstates = new Input<RealParameter>("nstates", "same as what in BD model", Validate.REQUIRED);
     //protected int nrofStates = dataInput.get().getMaxStateCount();
     //protected int nrofPattern = dataInput.get().getPatternCount();
-	protected int nrofStates = 30;
+	//protected int nrofStates = 30;
+	protected int nrofStates;
     protected static double bd_rate = 0.01;
     protected boolean recalc = true;
     
     /* override to avoid beagle*/
     @Override
     public void initAndValidate() {
+    	System.out.println("Likelihood class");
+    	System.out.println(nstates.get().getValue());
+    	nrofStates = (int)Math.round(nstates.get().getValue());
         // sanity check: alignment should have same #taxa as tree
         if (dataInput.get().getTaxonCount() != treeInput.get().getLeafNodeCount()) {
             throw new IllegalArgumentException("The number of nodes in the tree does not match the number of sequences");
@@ -41,6 +47,10 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
         int nodeCount = treeInput.get().getNodeCount();
         if (!(siteModelInput.get() instanceof SiteModel.Base)) {
         	throw new IllegalArgumentException("siteModel input should be of type SiteModel.Base");
+        }
+        System.out.println(nstates.get().getValue());
+        if (nstates.get() == null) {
+            throw new IllegalArgumentException("number of states to consider is required");
         }
         m_siteModel = (SiteModel.Base) siteModelInput.get();
         //System.out.println(m_siteModel);
@@ -56,9 +66,9 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
         }
         m_branchLengths = new double[nodeCount];
         storedBranchLengths = new double[nodeCount];
-
+        int stateCount = (int)Math.round(nstates.get().getValue());
         //int stateCount = dataInput.get().getMaxStateCount();
-        int stateCount = 30;
+        //int stateCount = 30;
         int patterns = dataInput.get().getPatternCount();
         if (stateCount == 4) {
             likelihoodCore = new BeerLikelihoodCore4();
@@ -274,11 +284,13 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
         //System.out.println("DDD" + distance);
     	//System.out.println(dataInput.get().getPatternCount());
         for (int k = 0; k <dataInput.get().getPatternCount(); k++) {
-            double max_prob =  Double.NEGATIVE_INFINITY;
+            //double max_prob =  Double.NEGATIVE_INFINITY;
+            double max_prob =  0;
             for (int i = 0; i < nrofStates; i++) {
             	//System.out.println( DipOrigProb(i, distance));
             	//System.out.println(transition_prob[62+i]);
-            	max_prob = Double.max(max_prob, partials[v]* transition_prob[60+i]);
+            	//max_prob = Double.max(max_prob, partials[v]* transition_prob[2 * nrofStates +i]);
+            	max_prob = max_prob + partials[v]* transition_prob[2 * nrofStates +i];
                 v++;
             }
             //System.out.println(max_prob);
