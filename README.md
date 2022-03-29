@@ -15,16 +15,18 @@ First, download and build the latest release of Beast2 Project:
     cd beast2
     ant
 
-Download and build NestedBD
+Download and build NestedBD. Make sure the folder beast2 and BD are under the same directory when running ant addon. 
 
-    cd ../
+    cd ..
     git clone https://github.com/Androstane/NestedBD.git
-    cd NestedBD/BD/
+    cp -r NestedBD/BD/ BD/
+    cd BD/
     ant addon
 
-Install NestedBD by moving the package to a place where BEAUti can find it
+If build is successful, you should be able to find the zip file named BD.addon.zip contain the package under /beast2/build/dist/. You can use the following command to check whether such file exist:
 
-    cp -r release/add-on ~/.beast/${beast version you installed}/BD
+    cd ..
+    test -f beast2/build/dist/BD.addon.zip && echo "$FILE exists."
 
 ### Usage
 
