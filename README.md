@@ -26,3 +26,7 @@ Install NestedBD by moving the package to a place where BEAUti can find it
 
     cp -r release/add-on ~/.beast/${beast version you installed}/BD
 
+### Usage
+
+NestedBD is implemented as a BEAST2 package. Navigate to where BEAST2 is installed, and use the following command to test whether Beast2 and NestedBD package have been properly installed:
+    ~/.beast/bin/beast sample.xml > sample.out
