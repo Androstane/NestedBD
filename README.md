@@ -30,5 +30,10 @@ If build is successful, you should be able to find the zip file named BD.addon.z
 
 ### Usage
 
-NestedBD is implemented as a BEAST2 package. Navigate to where BEAST2 is installed, and use the following command to test whether Beast2 and NestedBD package have been properly installed:
+NestedBD is implemented as a BEAST2 package, and requires beast2 installation to run.
+
+#### Installing BEAST2
+Please follow the instruction on http://www.beast2.org/ and download the BEAST2 version for your operating system
+
+Navigate to where BEAST2 is installed, and use the following command to test whether Beast2 and NestedBD package have been properly installed:
     ~/.beast/bin/beast sample.xml > sample.out
