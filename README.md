@@ -24,5 +24,5 @@ Download and build NestedBD
 
 Install NestedBD by moving the package to a place where BEAUti can find it
 
-    cp -r release/add-on ~/.beast/2.4/BD
+    cp -r release/add-on ~/.beast/${beast version you installed}/BD
 
