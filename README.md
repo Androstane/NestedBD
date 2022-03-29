@@ -33,10 +33,14 @@ If build is successful, you should be able to find the zip file named BD.addon.z
 NestedBD is implemented as a BEAST2 package, and requires beast2 installation to run.
 
 #### Installing BEAST2
-Please follow the instruction on http://www.beast2.org/ and download the BEAST2 version for your operating system. Note that this is different to download source code of beast2 from GitHub repository. 
+Please follow the instruction on http://www.beast2.org/ and download the BEAST2 version for your operating system. Note that this is different to download and build source code of beast2 from GitHub repository. 
 
 #### Move package to where BEAUti can find it
-By Default, BEAUti would look for package at ''$HOME/.beast2/''. If you have BEAUti UI installed you can check the path by:
+Then, to allow BEAST utilize the NestedBD package, we need to locate where BEAUti look for packages and move BD.addon.zip to that folder.
+
+By Default, BEAUti would look for package at ''$HOME/.beast2/''. Note that if you have not yet run BEAUti, you may not yet have a $HOME/.beast2 directory.
+or,
+If you have BEAUti UI installed (look for executable file of BEAUti at where you install BEAST). Then you can check the path by:
 - open BEAUti
 - Open the Package Manager through File > Manage Packages. 
 - Click the question mark on right corner.
