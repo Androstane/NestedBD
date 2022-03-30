@@ -82,7 +82,7 @@
 	</distribution>
 </distribution>
 
-<run id="mcmc" spec="beast.coupledMCMC.CoupledMCMC" chainLength="20000000" chains="4" target="0.234" logHeatedChains="true" deltaTemperature="0.1" optimise="true" resampleEvery="1000" >
+<run id="mcmc" spec="beast.coupledMCMC.CoupledMCMC" chainLength="20" chains="4" target="0.234" logHeatedChains="true" deltaTemperature="0.1" optimise="true" resampleEvery="1000" >
 	<state id="state" storeEvery="1">
 		<tree estimate="true" id="Tree" name="stateNode">
 			<taxonset id="TaxonSet" spec="beast.evolution.alignment.TaxonSet">
@@ -113,7 +113,7 @@
 
 
 
-	<logger fileName="$(seed).log" id="tracelog" logEvery="10000" model="@posterior">
+	<logger fileName="$(seed).log" id="tracelog" logEvery="10" model="@posterior">
 	<log idref="posterior"/>
 	<log idref="likelihood"/>
 
@@ -127,7 +127,7 @@
   <log idref="RRateChanges"/>
 	</logger>
 
-	<logger id="screenlog" logEvery="10000">
+	<logger id="screenlog" logEvery="10">
 	<log idref="posterior"/>
 	<log arg="@posterior" id="ESS.0" spec="util.ESS"/>
 	<log idref="likelihood"/>

@@ -69,6 +69,6 @@ if __name__ == "__main__":
         data = args['path to file contain dataset']
     if args['path to output xml']!=None:
         path = args['path to output xml']
-    L1, L2 = parse_xml("BD.xml")
+    L1, L2 = parse_xml("test.xml")
     data_dic = parse(data)
     write_xml(path, data_dic, L1, L2)
