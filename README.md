@@ -45,7 +45,16 @@ Please follow the instruction to run beast2 through command line: https://www.be
         ~/beast/bin/beast -seed 1 test.xml
         
 If all required packages are successfully installed, you should see ''1.trees'' and ''1.log'' (along with other files) at where you execute the command. 
+
 ### Usage
+#### Prepare Input Data
+NestedBD takes a integer copy number matrix, with each row represent a bin, and each column represent a cell. An example of accepted data matrix is available at ''scripts/test.cnp''.
+After the data is properly formatted, you can then generate the xml file to be used as input by: 
+        python xml_generator.py -data ${path to the data matrix file you prepared} -out ${path to generated xml file}
+Please ensure ''text.xml'' are in the same folder as the ''xml_generator.py'' to avoid error. 
+#### Running NestedBD
+
+
 
 
     
