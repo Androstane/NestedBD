@@ -40,8 +40,8 @@ Please follow the instruction on http://www.beast2.org/managing-packages/#Instal
 NestedBD uses CoupledMCMC to speed up execution, the CoupledMCMC package for beast2 can be installed according to instruction at: https://github.com/nicfel/CoupledMCMC.
 
 #### Test if the package is successfully installed
-Please follow the instruction to run beast2 through command line: https://www.beast2.org/2019/09/26/command-line-tricks.html, using scripts/BD.xml. For example, for linux, run 
-         ~/beast/bin/beast -seed 1 test.xml
+Please follow the instruction to run beast2 through command line: https://www.beast2.org/2019/09/26/command-line-tricks.html, using scripts/BD.xml. For example, for linux, run: 
+        ~/beast/bin/beast -seed 1 test.xml
 If all required packages are successfully installed, you should see ''1.trees'' and ''1.log'' (along with other files) at where you execute the command. 
 ### Usage
 
