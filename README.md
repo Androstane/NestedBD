@@ -50,8 +50,11 @@ If all required packages are successfully installed, you should see ''1.trees'' 
 #### Prepare Input Data
 NestedBD takes a integer copy number matrix, with each row represent a bin, and each column represent a cell. An example of accepted data matrix is available at ''scripts/test.cnp''.
 After the data is properly formatted, you can then generate the xml file to be used as input by: 
+
         python xml_generator.py -data ${path to the data matrix file you prepared} -out ${path to generated xml file}
+
 Please ensure ''text.xml'' are in the same folder as the ''xml_generator.py'' to avoid error. 
+
 #### Running NestedBD
 
 
