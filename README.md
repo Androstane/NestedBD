@@ -56,7 +56,7 @@ After the data is properly formatted, you can then generate the xml file to be u
 Please ensure ''text.xml'' are in the same folder as the ''xml_generator.py'' to avoid error. 
 
 #### Running NestedBD
-The MCMC chain length can be mannualy set to desired value by, such as N, by setting ''chainLength="{N}" in generated xml file. You may also want to change the frequency of logger, by setting logEvery="{M}" in the generated xml file accordingly. 
+The MCMC chain length can be mannualy set to desired value, such as N, by setting ''chainLength="{N}" in generated xml file. You may also want to change the frequency of logger, by setting logEvery="{M}" in the generated xml file accordingly. 
 
 When the xml file is ready, again follow the instruction to run beast2 through command line: https://www.beast2.org/2019/09/26/command-line-tricks.html. For example, with Linux and default installation:
 
