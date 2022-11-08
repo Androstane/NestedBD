@@ -63,7 +63,9 @@ When the xml file is ready, again follow the instruction to run beast2 through c
         ~/beast/bin/beast {your_input}.xml
 
 
+### Parameter and Prior specification
 
+There's no command line parameter required to be specified except the input file location when running NestedBD. The prior distribution and parameter values used for the study are specificed within the xml file. 
 
     
 
