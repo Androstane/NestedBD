@@ -1,0 +1,4 @@
+<package name='BD' version='1.9.6'>
+	<depends on='beast2' atleast='2.6.0' atmost="2.6.9"/>
+
+</package>
