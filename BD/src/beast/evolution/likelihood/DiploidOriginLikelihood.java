@@ -18,12 +18,6 @@ import beast.evolution.tree.TreeInterface;
 
 import java.util.*;
 
-
-
-
-
-
-
 public class DiploidOriginLikelihood extends TreeLikelihood {
 	public Input<RealParameter> origtime = new Input<RealParameter>("origtime", "time between diploid and tree root");
 	public Input<RealParameter> nstates = new Input<RealParameter>("nstates", "same as what in BD model", Validate.REQUIRED);
@@ -37,8 +31,8 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
     /* override to avoid beagle*/
     @Override
     public void initAndValidate() {
-    	System.out.println("Likelihood class");
-    	System.out.println(nstates.get().getValue());
+    	// System.out.println("Likelihood class");
+    	// System.out.println(nstates.get().getValue());
     	nrofStates = (int)Math.round(nstates.get().getValue());
         // sanity check: alignment should have same #taxa as tree
         if (dataInput.get().getTaxonCount() != treeInput.get().getLeafNodeCount()) {
@@ -48,7 +42,7 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
         if (!(siteModelInput.get() instanceof SiteModel.Base)) {
         	throw new IllegalArgumentException("siteModel input should be of type SiteModel.Base");
         }
-        System.out.println(nstates.get().getValue());
+        // System.out.println(nstates.get().getValue());
         if (nstates.get() == null) {
             throw new IllegalArgumentException("number of states to consider is required");
         }
@@ -94,7 +88,7 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
         patternLogLikelihoods = new double[patterns];
         m_fRootPartials = new double[patterns * stateCount];
         matrixSize = (stateCount + 1) * (stateCount + 1);
-        probabilities = new double[(stateCount + 1) * (stateCount + 1)];
+        probabilities = new double[(stateCount+1) * (stateCount+1)];
         Arrays.fill(probabilities, 1.0);
         if (dataInput.get().isAscertained) {
             useAscertainedSitePatterns = true;
@@ -175,6 +169,7 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
         } else {
             for (int i = 0; i< dataInput.get().getPatternCount(); i++) {
                 logP += patternLogLikelihoods[i] * dataInput.get().getPatternWeight(i);
+                //System.out.println(patternLogLikelihoods[i]);
             }
         }
     }
@@ -206,7 +201,10 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
             for (int i = 0; i < m_siteModel.getCategoryCount(); i++) {
                 final double jointBranchRate = m_siteModel.getRateForCategory(i, node) * branchRate;
                 substitutionModel.getTransitionProbabilities(node, parent.getHeight(), node.getHeight(), jointBranchRate, probabilities);
-                //System.out.println(node.getNr() + " " + Arrays.toString(probabilities));
+                //if (node.getNr() == 29) {
+                	//System.out.println(node.getNr() + " " + Arrays.toString(probabilities));
+                //}
+                
                 likelihoodCore.setNodeMatrix(nodeIndex, i, probabilities);
             }
             update |= Tree.IS_DIRTY;
@@ -244,6 +242,7 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
                 }
 
                 if (node.isRoot()) {
+                	//System.out.println("root");
                     // No parent this is the root of the beast.tree -
                     // calculate the pattern likelihoods
                     final double[] proportions = m_siteModel.getCategoryProportions(node);
@@ -287,13 +286,18 @@ public class DiploidOriginLikelihood extends TreeLikelihood {
             //double max_prob =  Double.NEGATIVE_INFINITY;
             double max_prob =  0;
             for (int i = 0; i < nrofStates; i++) {
-            	//System.out.println( DipOrigProb(i, distance));
+            	//System.out.println(DipOrigProb(i, distance));
             	//System.out.println(transition_prob[62+i]);
             	//max_prob = Double.max(max_prob, partials[v]* transition_prob[2 * nrofStates +i]);
             	max_prob = max_prob + partials[v]* transition_prob[2 * nrofStates +i];
+               if (Double.isNaN(partials[v])){
+                	System.out.println(k);
+                }
+            	//if (k == dataInput.get().getPatternCount()-1) {
+            		//System.out.println(partials[v]);}
                 v++;
             }
-            //System.out.println(max_prob);
+
             outLogLikelihoods[k] = Math.log(max_prob) + likelihoodCore.getLogScalingFactor(k);
         }
     }

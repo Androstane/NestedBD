@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beast beautitemplate='Standard' beautistatus=''
+       namespace="beast.core.parameter:beast.core:beast.evolution.alignment:beast.evolution.tree:beast.evolution.speciation:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood"
+       version="2.0">
+
+
+<map name="Uniform">beast.math.distributions.Uniform</map>
+    
+<map name="Exponential">beast.math.distributions.Exponential</map>
+    
+<map name="LogNormal">beast.math.distributions.LogNormalDistributionModel</map>
+    
+<map name="Normal">beast.math.distributions.Normal</map>
+    
+<map name="Beta">beast.math.distributions.Beta</map>
+    
+<map name="Gamma">beast.math.distributions.Gamma</map>
+    
+<map name="LaplaceDistribution">beast.math.distributions.LaplaceDistribution</map>
+    
+<map name="prior">beast.math.distributions.Prior</map>
+
+<data id="CNAprofile" dataType="integer">
+<sequence taxon="SRR5964124.sorted.bam">
+2,2,2,2,3
+</sequence>
+<sequence taxon="SRR5964125.sorted.bam">
+2,2,2,2,3
+</sequence>
+<sequence taxon="SRR5964126.sorted.bam">
+2,2,2,2,3
+</sequence>
+<sequence taxon="SRR5964127.sorted.bam">
+2,2,2,2,3
+</sequence>
+<sequence taxon="SRR5964133.sorted.bam">
+2,2,2,2,3
+
+</sequence>
+</data>
+
+ <input id="datatype" spec="beast.evolution.datatype.IntegerData"/>
+<!-- The error model -->
+<input spec='beast.evolution.errormodel.NormalErrorModel' id='errorModel' vr = '@VR' vf = '@VF' p = '@p' nstate = '10' datatype = '@datatype'/>
+
+
+
+
+<distribution id="posterior" spec="util.CompoundDistribution">
+	<distribution id="prior" spec="util.CompoundDistribution">
+		<distribution id="BirthDeathModel" spec="beast.evolution.speciation.BirthDeathGernhard08Model" birthDiffRate="@netDiversificationRate" relativeDeathRate="@ExtinctionFraction" tree="@Tree"/>
+		<!--  <distribution birthDiffRate="@birthRate" id="YuleModel" spec="beast.evolution.speciation.YuleModel" tree="@Tree"/> -->
+                <prior id="DiversificationPrior"  spec="beast.math.distributions.Prior" name="distribution" x="@netDiversificationRate">
+                    <Uniform id="Uniform.0" name="distr" lower="0.0" upper="1000000"/>
+                </prior>
+                <prior id="ExtinctionFractionPrior"  spec="beast.math.distributions.Prior" name="distribution" x="@ExtinctionFraction">
+                    <Uniform id="Uniform.1" name="distr" lower="0.0" upper="1.0"/>
+                </prior>
+				<prior id="OrigTimePrior" spec="beast.math.distributions.Prior" x="@OrigTime" name="distribution">
+					<Uniform id="Uniform.2" lower="0.0" upper = "1" name="distr"/>
+				</prior>
+				<prior id="VRPrior" spec="beast.math.distributions.Prior" x="@VR" name="distribution">
+					<Uniform id="Uniform.3" lower="-1.0" upper = "1.0" name="distr"/>
+				</prior>
+				<prior id="VFPrior" spec="beast.math.distributions.Prior" x="@VF" name="distribution">
+					<Uniform id="Uniform.4" lower="-1.0" upper = "1.0" name="distr"/>
+				</prior>
+        		<prior id="PPrior" name="distribution" x="@p">
+            		<Gamma id="Gamma.0" name="distr" mode = "ShapeScale">
+                		<parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="alpha">7.0</parameter>
+               		 	<parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" name="beta">0.035</parameter>
+           			</Gamma>
+        		</prior>
+				
+		
+	</distribution>
+
+
+
+	<distribution id="likelihood" spec="util.CompoundDistribution">
+		 <distribution id="DipOrigLikelihood" spec="beast.evolution.likelihood.DiploidOriginLikelihoodWithError" data="@CNAprofile" tree="@Tree" origtime = "@OrigTime" nstates = "10" errorModel = "@errorModel" >
+			<siteModel id="SiteModel" spec="SiteModel">
+				<substModel id="BD" spec="beast.evolution.substitutionmodel.BD" nstate = "10" >
+				</substModel>
+			</siteModel>
+			<branchRateModel spec="beast.evolution.branchratemodel.RandomLocalClockModel" id="branchRates" ratesAreMultipliers="false" tree='@Tree'>
+				<parameter name='rates' id='rates' value="1" lower='0' upper='100'/>
+        		<indicators spec='BooleanParameter' id='indicators' value="false"/>
+				<!--  <parameter estimate="false" id="clockRate" name="clock.rate" value="1.0"/> -->
+		</branchRateModel>
+		</distribution>
+	</distribution>
+</distribution>
+
+
+
+<run chainLength="2000000" id="mcmc" preBurnin="0" spec="MCMC">
+	<state id="state" storeEvery="1">
+		<tree estimate="true" id="Tree" name="stateNode">
+			<taxonset id="TaxonSet" spec="beast.evolution.alignment.TaxonSet">
+				<data idref="CNAprofile" name="alignment"/>
+			</taxonset>
+		</tree>
+		<parameter estimate="true" id="netDiversificationRate" name="stateNode" value = "1"/>
+		<parameter estimate="true" id="ExtinctionFraction" name="stateNode" value = "0.5"/>
+		<parameter estimate="true" id="OrigTime"  name="stateNode" value = "0.20"/>
+		<parameter estimate="true" id="VR"  name="stateNode" value = "0.01"/>
+		<parameter estimate="False" id="VF"  name="stateNode" value = "0.01"/>
+		<parameter estimate="true" idref="indicators"  name="stateNode" value = "false"/>
+		<parameter estimate="true" idref="rates"  name="stateNode" value = "1"/>
+		<parameter estimate="true" id="p"  name="stateNode" value = "0.2"/>
+	</state>
+
+	<distribution idref="posterior"/>
+	<operator degreesOfFreedom="1" id="treeScaler" scaleFactor="0.5" spec="beast.evolution.operators.ScaleOperator" tree="@Tree" weight="10.0"/>
+	<operator id="UniformOperator" spec="beast.evolution.operators.Uniform" tree="@Tree" weight="1.0"/>
+	<operator gaussian="true" id="SubtreeSlide" optimise="true" size="1.0" spec="beast.evolution.operators.SubtreeSlide" tree="@Tree" weight="1.0"/>
+	<operator id="narrow" isNarrow="true" spec="beast.evolution.operators.Exchange" tree="@Tree" weight="11.0"/>
+	<operator id="wide" isNarrow="false" spec="beast.evolution.operators.Exchange" tree="@Tree" weight="1.0"/>
+	<operator id="WilsonBalding" spec="beast.evolution.operators.WilsonBalding" tree="@Tree" weight="1.0"/>
+	<operator degreesOfFreedom="1" id="OrigTimeScaler" scaleFactor="0.5" spec="beast.evolution.operators.ScaleOperator" weight="10.0" parameter="@OrigTime"/>
+	<operator degreesOfFreedom="1" id="VRScaler" scaleFactor="0.5" spec="beast.evolution.operators.ScaleOperator" weight="2.0" parameter="@VR"/>
+	<operator id="VRSlicer" windowSize="0.001" sliceDensity = '@VRPrior' spec="beast.evolution.operators.SliceOperator" weight="5.0" parameter="@VR"/>
+	<operator degreesOfFreedom="1" id="DiversificationRateScaler" scaleFactor="0.5" spec="beast.evolution.operators.ScaleOperator" weight="10.0" parameter="@netDiversificationRate"/>
+	<operator degreesOfFreedom="1" id="ExtinctionFractionScaler" scaleFactor="0.5" spec="beast.evolution.operators.ScaleOperator" weight="10.0" parameter="@ExtinctionFraction"/>
+	<operator id='indicatorFlip' spec='BitFlipOperator' weight='1' parameter='@indicators'/>
+    <operator id='rateScaler' spec='ScaleOperator' scaleFactor="0.5" weight="1" parameter='@rates'/>
+	<operator degreesOfFreedom="1" id="pScaler" scaleFactor="0.5" spec="beast.evolution.operators.ScaleOperator" weight="2.0" parameter="@p"/>
+	
+
+	
+
+	<logger fileName="random_beast.$(seed).log" id="tracelog" logEvery="100" model="@posterior">
+	<log idref="posterior"/>
+	<log idref="likelihood"/>
+	
+	<log idref="prior"/>
+	<log id="TreeHeight" spec="TreeHeightLogger" tree="@Tree"/>
+	<log idref="BirthDeathModel"/>
+	<log idref="OrigTime"/>
+	<log idref="VR"/>
+	<log idref="VF"/>
+	<log idref="netDiversificationRate"/>
+	<log idref="ExtinctionFraction"/>
+	</logger>
+	
+	<logger id="screenlog" logEvery="100">
+	<log idref="posterior"/>
+	<log arg="@posterior" id="ESS.0" spec="util.ESS"/>
+	<log idref="likelihood"/>
+	<log idref="prior"/>
+	<log idref="OrigTime"/>
+	<log idref="VR"/>
+	<log idref="p"/>
+	<log idref = "TreeHeight"></log>
+	</logger>
+
+	<logger fileName="random_beast.$(seed).trees" id="treelog" logEvery="1" mode="tree">
+	<log idref="Tree"/>
+
+	</logger>
+
+
+	<init id="RandomTree" initial="@Tree" spec="RandomTree" taxa="@CNAprofile">
+		<populationModel id="ConstantPopulation" spec="ConstantPopulation">
+			<parameter dimension="1" estimate="true" id="popSize" name="popSize" value="1"/>
+		</populationModel>
+	</init>
+
+</run>
+
+</beast>
