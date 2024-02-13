@@ -1,4 +1,5 @@
 # NestedBD
+![Figure1](https://github.com/Androstane/NestedBD/assets/31413803/4baea497-4bfc-4743-8d14-dfd0d3e6205e)
 
 NestedBD is a BEAST 2 package for inference of evolutionary trees (topologies and branch lengths) from single-cell copy number profiles. We are working on making NestedBD availalbe through BEAST2 Package Manager. Currently, if you would like to use NestedBD it can be installed mannuly by using BDaddon.zip as described in section **"Installation"**. If you would like to mannuly build the package from source file (which is also in this repository), see Section **"Build the Package"**.
 
