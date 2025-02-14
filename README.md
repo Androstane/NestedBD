@@ -6,7 +6,7 @@
 NestedBD is a BEAST 2 package for inference of evolutionary trees (topologies and branch lengths) from single-cell copy number profiles.  
 
 ## NestedBD-Long  
-![Figure2](YOUR_IMAGE_LINK_HERE)  
+![Figure2](https://github.com/user-attachments/assets/bb54fa25-2f44-459d-b6ac-c303ab8bf8a5)
 
 **NestedBD-Long** is an upgraded version of NestedBD that extends its functionality to handle longitudinal data.
 
