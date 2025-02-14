@@ -10,7 +10,7 @@ NestedBD is a BEAST 2 package for inference of evolutionary trees (topologies an
 
 **NestedBD-Long** is an upgraded version of NestedBD that extends its functionality to handle longitudinal data.
 
-We are working on making NestedBD available through the BEAST2 Package Manager. Currently, if you would like to use NestedBD, it can be installed manually using `BDaddon.zip` as described in the **Installation** section. If you prefer to build the package from source files (which are also available in this repository), see the **Build the Package** section.
+We are working on making NestedBD and NestedBD-Long available through the BEAST2 Package Manager. Currently, if you would like to use NestedBD, it can be installed manually using `BDaddon.zip` as described in the **Installation** section. If you prefer to build the package from source files (which are also available in this repository), see the **Build the Package** section.
 
 ### Build the Package 
 #### Prerequisite 
