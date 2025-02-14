@@ -44,9 +44,11 @@ NestedBD is implemented as a BEAST2 package, and requires beast2 installation to
 Please follow the instruction on http://www.beast2.org/ and download the BEAST2 version for your operating system. Note that this is different to download and build source code of beast2 from GitHub repository. 
 
 #### Installing the Pakcage 
-Please follow the instructions on http://www.beast2.org/managing-packages/#Install_by_hand and use BD.addon.zip. 
+Please follow the instructions on http://www.beast2.org/managing-packages/#Install_by_hand and use BD.addon.zip.
+
 NestedBD uses CoupledMCMC to speed up execution, the CoupledMCMC package for beast2 can be installed according to instruction at: https://github.com/nicfel/CoupledMCMC.
-NestedBD-Long uses Sampled Ancestor to specify the tree prior, the Sampled Ancestor package for beast2 can be installed according to instructions at: https://github.com/CompEvol/sampled-ancestors/tree/v2.6
+
+NestedBD-Long uses Sampled Ancestor to specify the tree prior, the Sampled Ancestor package for beast2 can be installed according to instructions at: https://github.com/CompEvol/sampled-ancestors/tree/v2.6.
 
 #### Test if the package is successfully installed
 Please follow the instructions to run beast2 through the command line: https://www.beast2.org/2019/09/26/command-line-tricks.html, using scripts/BD.xml. For example, for linux, run:
