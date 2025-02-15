@@ -67,7 +67,17 @@ After the data is properly formatted, you can then generate the XML file to be u
 Please ensure ''text.xml'' is in the same folder as the ''xml_generator.py'' to avoid error. 
 
 #### Prepare Input Data for NestedBD-Long
+NestedBDLong takes a separate integer copy number matrix for each time point, and a vector contains the time associated with each matrix as input. For each input matrix, each row represents a genomic bin and each column represents an individual cell. An example of an accepted data matrix is available at scripts/NestedBDLong/sampled_profiles_{pre,mid,post}.cnp. Once your data matrix is properly formatted, you can generate the XML file for NestedBDLong by running the provided command-line tool, which reads the formatted data and integrates sampling information based on specified time points by:
 
+        python script.py \
+          --output_dir ./data/ \
+          --xml_template ./template.xml \
+          --output_xml ./NestedBDLong_output.xml \
+          --ntimepoints 3 \
+          --names_of_SA post,mid,pre \
+          --times_of_SA 0.0,1.0,3.0
+
+    
 #### Running NestedBD or NestedBD-Long
 The MCMC chain length can be manually set to the desired value, such as N, by setting ''chainLength="{N}" in the generated XML file. You may also want to change the frequency of the logger by setting logEvery="{M}" in the generated XML file accordingly. 
 
