@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" version="2.0">
+
+
+<data id="bears" name="alignment" dataType="integer">
+<sequence id="cell1" taxon="cell1">
+    2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,7,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0
+</sequence>
+</data>
+
+<map name="Uniform">beast.math.distributions.Uniform</map>
+<map name="Exponential">beast.math.distributions.Exponential</map>
+<map name="LogNormal">beast.math.distributions.LogNormalDistributionModel</map>
+<map name="Normal">beast.math.distributions.Normal</map>
+<map name="Beta">beast.math.distributions.Beta</map>
+<map name="Gamma">beast.math.distributions.Gamma</map>
+<map name="LaplaceDistribution">beast.math.distributions.LaplaceDistribution</map>
+<map name="prior">beast.math.distributions.Prior</map>
+<map name="InverseGamma">beast.math.distributions.InverseGamma</map>
+<map name="OneOnX">beast.math.distributions.OneOnX</map>
+
+
+<run id="mcmc" spec="beast.coupledMCMC.CoupledMCMC" chainLength="80000000" chains="4" target="0.234" logHeatedChains="true" deltaTemperature="0.1" optimise="true" resampleEvery="1000" >
+    <state id="state" storeEvery="20">
+        <tree id="Tree.t:bears" name="stateNode">
+            <trait id="dateTrait.t:bears" spec="beast.evolution.tree.TraitSet" traitname="date-backward">
+    cell1=0.0,
+    
+                    <taxa id="TaxonSet.bears" spec="TaxonSet">
+                    <alignment idref="bears"/>
+                </taxa>
+            </trait>
+            <taxonset idref="TaxonSet.bears"/>
+        </tree>
+        <parameter id="ucldMean.c:bears" name="stateNode">1.0</parameter>
+        <parameter id="ucldStdev.c:bears" lower="0.0" name="stateNode">0.1</parameter>
+        <parameter id="originFBD.t:bears" lower="0.0" name="stateNode">100.0</parameter>
+        <parameter id="diversificationRateFBD.t:bears" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="turnoverFBD.t:bears" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+        <parameter id="samplingProportionFBD.t:bears" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+        <stateNode id="Indicators" spec="parameter.BooleanParameter">false</stateNode>
+        <parameter estimate = "false" id="meanClockRate" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
+        <parameter id="clockrates" spec="parameter.RealParameter" lower="1.0E-9" name="stateNode">1.0</parameter>
+		<parameter estimate="false" id="OrigTime"  name="stateNode" value = "1.0"/>
+    </state>
+
+    <init id="RandomTree.t:bears" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:bears" taxa="@bears">
+        <populationModel id="ConstantPopulation0.t:bears" spec="ConstantPopulation">
+            <parameter id="randomPopSize.t:bears" name="popSize">1.0</parameter>
+        </populationModel>
+		
+    </init>
+
+    <distribution id="posterior" spec="util.CompoundDistribution">
+        <distribution id="prior" spec="util.CompoundDistribution">
+            <distribution id="FBD.t:bears" spec="beast.evolution.speciation.SABirthDeathModel" conditionOnRhoSampling="true" diversificationRate="@diversificationRateFBD.t:bears" origin="@originFBD.t:bears" samplingProportion="@samplingProportionFBD.t:bears" tree="@Tree.t:bears" turnover="@turnoverFBD.t:bears">
+                <parameter id="rFBD.t:bears" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
+                <parameter id="rhoFBD.t:bears" estimate="false" lower="0.0" name="rho" upper="1.0">1.0</parameter>
+            </distribution>
+            <prior id="diversificationRatePriorFBD.t:bears" name="distribution" x="@diversificationRateFBD.t:bears">
+                <Uniform id="Uniform.0" name="distr" upper="Infinity"/>
+            </prior>
+            <prior id="originPriorFBD.t:bears" name="distribution" x="@originFBD.t:bears">
+                <Uniform id="Uniform.01" name="distr" upper="Infinity"/>
+            </prior>
+            <prior id="samplingProportionPriorFBD.t:bears" name="distribution" x="@samplingProportionFBD.t:bears">
+                <Uniform id="Uniform.02" name="distr"/>
+            </prior>
+            <prior id="turnoverPriorFBD.t:bears" name="distribution" x="@turnoverFBD.t:bears">
+                <Uniform id="Uniform.03" name="distr"/>
+            </prior>
+            <prior id="ucldStdevPrior.c:bears" name="distribution" x="@ucldStdev.c:bears">
+                <Gamma id="Gamma.0" name="distr">
+                    <parameter id="RealParameter.0" estimate="false" name="alpha">0.5396</parameter>
+                    <parameter id="RealParameter.01" estimate="false" name="beta">0.3819</parameter>
+                </Gamma>
+            </prior>
+            <prior id="RRateChangesPrior" name="distribution">
+            <x id="RRateChanges" spec="util.Sum">
+                <arg idref="Indicators"/>
+            </x>
+            <distr id="Poisson.0" spec="beast.math.distributions.Poisson">
+                <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="lambda">0.6931471805599453</parameter>
+            </distr>
+        </prior>
+        <prior id="RRatesPrior" name="distribution" x="@clockrates">
+            <Gamma id="Gamma.1" name="distr">
+                <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="alpha">0.5</parameter>
+                <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" name="beta">2.0</parameter>
+            </Gamma>
+        </prior>
+        </distribution>
+        <distribution id="likelihood" spec="util.CompoundDistribution">
+            <distribution id="treeLikelihood.bears" spec="beast.evolution.likelihood.DiploidOriginLikelihood" data="@bears" tree="@Tree.t:bears" nstates = "10" origtime = "@OrigTime">
+			<siteModel id="SiteModel" spec="SiteModel">
+				<substModel id="BD" spec="beast.evolution.substitutionmodel.BD" nstate = "10" >
+			</substModel>
+			</siteModel>
+            <branchRateModel id="RandomLocalClock" spec="beast.evolution.branchratemodel.RandomLocalClockModel" clock.rate="@meanClockRate" indicators="@Indicators" rates="@clockrates" tree="@Tree.t:bears"/>
+            </distribution>
+        </distribution>
+    </distribution>
+
+    <operator id="ucldMeanScaler.c:bears" spec="ScaleOperator" parameter="@ucldMean.c:bears" scaleFactor="0.5" weight="1.0"/>
+
+    <operator id="ucldStdevScaler.c:bears" spec="ScaleOperator" parameter="@ucldStdev.c:bears" scaleFactor="0.5" weight="3.0"/>
+
+    <operator id="relaxedUpDownOperator.c:bears" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
+        <up idref="ucldMean.c:bears"/>
+        <down idref="Tree.t:bears"/>
+    </operator>
+
+    <operator id="originScalerFBD.t:bears" spec="ScaleOperator" parameter="@originFBD.t:bears" scaleFactor="0.75" weight="3.0"/>
+
+    <operator id="divRateScalerFBD.t:bears" spec="ScaleOperator" parameter="@diversificationRateFBD.t:bears" scaleFactor="0.75" weight="10.0"/>
+
+    <operator id="turnoverScalerFBD.t:bears" spec="ScaleOperator" parameter="@turnoverFBD.t:bears" scaleFactor="0.75" weight="10.0"/>
+
+    <operator id="samplingPScalerFBD.t:bears" spec="ScaleOperator" parameter="@samplingProportionFBD.t:bears" scaleFactor="0.75" weight="10.0"/>
+
+    <operator id="LeafToSAFBD.t:bears" spec="LeafToSampledAncestorJump" tree="@Tree.t:bears" weight="10.0"/>
+
+    <operator id="SAWilsonBaldingFBD.t:bears" spec="SAWilsonBalding" tree="@Tree.t:bears" weight="10.0"/>
+
+    <operator id="SAWideFBD.t:bears" spec="SAExchange" isNarrow="false" tree="@Tree.t:bears" weight="10.0"/>
+
+    <operator id="SANarrowFBD.t:bears" spec="SAExchange" tree="@Tree.t:bears" weight="10.0"/>
+
+    <operator id="SAUniformOperatorFBD.t:bears" spec="SAUniform" tree="@Tree.t:bears" weight="20.0"/>
+
+    <operator id="SATreeRootScalerFBD.t:bears" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@Tree.t:bears" weight="1.0"/>
+
+    <operator id="SATreeScalerFBD.t:bears" spec="SAScaleOperator" scaleFactor="0.95" tree="@Tree.t:bears" weight="3.0"/>
+
+    <operator id="IndicatorsBitFlip" spec="BitFlipOperator" parameter="@Indicators" weight="10.0"/>
+
+  	<operator id="ClockRateScaler" spec="ScaleOperator" parameter="@clockrates" scaleFactor="0.5" weight="10.0"/>
+
+
+    <logger id="tracelog" fileName="KTN132_SA.log" logEvery="10000" model="@posterior" sanitiseHeaders="true" sort="smart">
+        <log idref="posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+        <log idref="treeLikelihood.bears"/>
+        <log id="TreeHeight.t:bears" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:bears"/>
+        <log idref="ucldMean.c:bears"/>
+        <log idref="ucldStdev.c:bears"/>
+        <log idref="FBD.t:bears"/>
+        <log idref="originFBD.t:bears"/>
+        <log idref="diversificationRateFBD.t:bears"/>
+        <log idref="turnoverFBD.t:bears"/>
+        <log idref="samplingProportionFBD.t:bears"/>
+        <log id="SACountFBD.t:bears" spec="beast.evolution.tree.SampledAncestorLogger" tree="@Tree.t:bears"/>
+    </logger>
+
+    <logger id="screenlog" logEvery="10000">
+        <log idref="posterior"/>
+        <log id="ESS.0" spec="util.ESS" arg="@posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+    </logger>
+
+    <logger id="treelog.t:bears" fileName="KTN132_SA.trees" logEvery="10000" mode="tree">
+        <log id="TreeWithMetaDataLogger.t:bears" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RandomLocalClock" tree="@Tree.t:bears"/>
+    </logger>
+
+</run>
+
+</beast>
