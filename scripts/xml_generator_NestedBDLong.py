@@ -99,8 +99,6 @@ def main():
     else:
         if args.ntimepoints == 3:
             names_for_SA = ['post', 'mid', 'pre']
-        elif args.ntimepoints == 4:
-            names_for_SA = ['post', 'mid', 'mid1', 'pre']
         else:
             names_for_SA = [f"SA{i}" for i in range(args.ntimepoints)]
 
@@ -112,8 +110,6 @@ def main():
     else:
         if args.ntimepoints == 3:
             times_for_SA = [0.0, 1.0, 3.0]
-        elif args.ntimepoints == 4:
-            times_for_SA = [0.0, 1.0, 2.0, 3.0]
         else:
             times_for_SA = [float(i) for i in range(args.ntimepoints)]
 
