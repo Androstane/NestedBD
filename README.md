@@ -90,6 +90,17 @@ When the XML file is ready, again follow the instructions to run beast2 through 
 
 There's no command line parameter required to be specified except the input file location when running NestedBD. The prior distribution and parameter values used for the study are specificed within the xml file. 
 
-    
+
+## Citations
+* BEAST2: [Bouckaert at al. (2019)](https://doi.org/10.1371/journal.pcbi.1006650)
+  
+* CoupledMCMC: [Müller et al. (2020)](https://doi.org/10.7717/peerj.9473)
+
+* Error models: [Chen et al. (2022)](https://doi.org/10.1093/molbev/msac143)
+  
+* Sampled Ancestor: [Gavryushkina et al. (2014)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003919)
+  
+
+
 
 
